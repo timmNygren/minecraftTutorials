@@ -1,0 +1,8 @@
+// Items
+item.coord_cache.name=Coordinate Cache
+
+// Blocks
+tile.coord_transporter.name=Coordinate Transporter
+
+// CreativeTab BG
+itemGroup.tabTeleport=Teleport Mod

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "normal": [
+      { "model": "teleportmod:coord_transporter" },
+      { "model": "teleportmod:coord_transporter", "y": 90 },
+      { "model": "teleportmod:coord_transporter", "y": 180 },
+      { "model": "teleportmod:coord_transporter", "y": 270 }
+    ]
+  }
+}
