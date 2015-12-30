@@ -1,5 +1,6 @@
 package com.dragothmar.teleportmod;
 
+import com.dragothmar.teleportmod.init.TeleportTileEntities;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -27,6 +28,7 @@ public class TeleportMod
         TeleportBlocks.register();
         TeleportItems.init();
         TeleportItems.register();
+        TeleportTileEntities.register();
     }
 
     @EventHandler

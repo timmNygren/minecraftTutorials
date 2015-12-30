@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class ItemCoordinateCache extends Item
 {
-    private String mNbtTag = "coords";
+    public static final String NBT_TAG_COORDS = "coords";
     /**
      * Called when a Block is right-clicked with this Item
      *
@@ -40,7 +40,7 @@ public class ItemCoordinateCache extends Item
             nbt.setInteger("posX", pos.getX());
             nbt.setInteger("posY", pos.getY());
             nbt.setInteger("posZ", pos.getZ());
-            stack.getTagCompound().setTag(mNbtTag, nbt);
+            stack.getTagCompound().setTag(NBT_TAG_COORDS, nbt);
             stack.setStackDisplayName(EnumChatFormatting.AQUA + "Coordinate Cache");
         }
         return false;
@@ -56,7 +56,7 @@ public class ItemCoordinateCache extends Item
         {
             if (itemStackIn.getTagCompound() != null)
             {
-                itemStackIn.getTagCompound().removeTag(mNbtTag);
+                itemStackIn.getTagCompound().removeTag(NBT_TAG_COORDS);
                 itemStackIn.clearCustomName();
             }
         }
@@ -75,9 +75,9 @@ public class ItemCoordinateCache extends Item
     {
         if (stack.getTagCompound() != null)
         {
-            if (stack.getTagCompound().hasKey(mNbtTag))
+            if (stack.getTagCompound().hasKey(NBT_TAG_COORDS))
             {
-                NBTTagCompound nbt = (NBTTagCompound)stack.getTagCompound().getTag(mNbtTag);
+                NBTTagCompound nbt = (NBTTagCompound)stack.getTagCompound().getTag(NBT_TAG_COORDS);
                 int dim = nbt.getInteger("dim");
                 String dimension = "";
                 switch(dim)
@@ -108,7 +108,7 @@ public class ItemCoordinateCache extends Item
     {
         if (stack.getTagCompound() != null)
         {
-            return stack.getTagCompound().hasKey(mNbtTag);
+            return stack.getTagCompound().hasKey(NBT_TAG_COORDS);
         }
         return false;
     }
