@@ -10,13 +10,13 @@ import java.io.IOException;
  */
 public class GuiCoordTransporter extends GuiScreen
 {
-    private GuiButton a, b;
+    public GuiButton a, b;
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
+        this.drawDefaultBackground();
     }
 
     @Override

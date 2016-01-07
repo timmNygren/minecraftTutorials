@@ -1,6 +1,7 @@
 package com.dragothmar.teleportmod.network;
 
 import com.dragothmar.teleportmod.client.gui.GuiCoordTransporter;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;

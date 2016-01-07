@@ -65,9 +65,10 @@ public class BlockCoordTransporter extends Block implements ITileEntityProvider
                     playerIn.addChatMessage(new ChatComponentText("Added coordinate cache to tile entity."));
 
             }
-        } else if (!worldIn.isRemote) {
-            playerIn.openGui(TeleportMod.INSTANCE, GuiHandler.COORD_TRANSPORTER_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
+//        if (worldIn.isRemote) {
+//            playerIn.openGui(TeleportMod.INSTANCE, GuiHandler.COORD_TRANSPORTER_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
+//        }
 
         return true;
     }

@@ -34,7 +34,7 @@ public class TeleportItems
             @Override
             public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
             {
-                if (worldIn.isRemote)
+                if (!worldIn.isRemote)
                 {
                     playerIn.openGui(TeleportMod.INSTANCE, 0, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int)playerIn.posZ);
                 }
