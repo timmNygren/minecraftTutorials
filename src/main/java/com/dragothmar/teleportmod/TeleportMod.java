@@ -16,6 +16,9 @@ import com.dragothmar.teleportmod.init.TeleportItems;
 @Mod(modid = Reference.MODID, version = Reference.VERSION, name = Reference.MOD_NAME)
 public class TeleportMod
 {
+    @Mod.Instance
+    public static TeleportMod INSTANCE = new TeleportMod();
+
     @SidedProxy(serverSide = Reference.SERVER_PROXY_CLASS, clientSide = Reference.CLIENT_PROXY_CLASS)
     public static CommonProxy proxy;
 

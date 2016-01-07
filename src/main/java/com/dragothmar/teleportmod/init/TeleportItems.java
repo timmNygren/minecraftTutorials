@@ -3,9 +3,13 @@ package com.dragothmar.teleportmod.init;
 import com.dragothmar.teleportmod.TeleportMod;
 import com.dragothmar.teleportmod.Reference;
 import com.dragothmar.teleportmod.items.ItemCoordinateCache;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
@@ -24,6 +28,19 @@ public class TeleportItems
     public static void register()
     {
         GameRegistry.registerItem(coord_cache, coord_cache.getUnlocalizedName().substring(5)) ; // unlocal name is tile.coord_cache
+
+
+        GameRegistry.registerItem(new Item() {
+            @Override
+            public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+            {
+                if (worldIn.isRemote)
+                {
+                    playerIn.openGui(TeleportMod.INSTANCE, 0, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int)playerIn.posZ);
+                }
+                return itemStackIn;
+            }
+        }.setCreativeTab(TeleportMod.tabTeleport), "testItem");
     }
 
     public static void registerRenders()

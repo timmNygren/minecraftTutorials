@@ -1,6 +1,8 @@
 package com.dragothmar.teleportmod.blocks;
 
+import com.dragothmar.teleportmod.TeleportMod;
 import com.dragothmar.teleportmod.items.ItemCoordinateCache;
+import com.dragothmar.teleportmod.network.GuiHandler;
 import com.dragothmar.teleportmod.tileentity.TileEntityCoordTransporter;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -14,6 +16,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
  * Created by Dragothmar on 12/22/15.
@@ -24,6 +27,7 @@ public class BlockCoordTransporter extends Block implements ITileEntityProvider
     public BlockCoordTransporter(Material materialIn)
     {
         super(materialIn);
+        this.isBlockContainer = true;
     }
 
     @Override
@@ -57,16 +61,35 @@ public class BlockCoordTransporter extends Block implements ITileEntityProvider
                 TileEntityCoordTransporter tect = (TileEntityCoordTransporter) worldIn.getTileEntity(pos);
                 tect.addEntry("Thing", stack);
                 stack.stackSize--;
-                playerIn.addChatMessage(new ChatComponentText("Added coordinate cache to tile entity."));
+                if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+                    playerIn.addChatMessage(new ChatComponentText("Added coordinate cache to tile entity."));
+
             }
+        } else if (!worldIn.isRemote) {
+            playerIn.openGui(TeleportMod.INSTANCE, GuiHandler.COORD_TRANSPORTER_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
 
         return true;
     }
 
     @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        super.breakBlock(worldIn, pos, state);
+        worldIn.removeTileEntity(pos);
+    }
+
+    @Override
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
         return new TileEntityCoordTransporter();
+    }
+
+    @Override
+    public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam)
+    {
+        super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
     }
 }
