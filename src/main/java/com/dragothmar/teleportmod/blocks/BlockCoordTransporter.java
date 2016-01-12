@@ -23,6 +23,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
  */
 public class BlockCoordTransporter extends Block implements ITileEntityProvider
 {
+    private String addCoordString = "";
 
     public BlockCoordTransporter(Material materialIn)
     {
@@ -59,13 +60,29 @@ public class BlockCoordTransporter extends Block implements ITileEntityProvider
             if (stack.getItem().hasEffect(stack))
             {
                 TileEntityCoordTransporter tect = (TileEntityCoordTransporter) worldIn.getTileEntity(pos);
-                tect.addEntry("Thing", stack);
-                stack.stackSize--;
-                if (FMLCommonHandler.instance().getEffectiveSide().isClient())
-                    playerIn.addChatMessage(new ChatComponentText("Added coordinate cache to tile entity."));
+                if (tect.addEntry("Thing", stack) == 0)
+                {
+                    stack.stackSize--;
+                    addCoordString = "Added coordinate cache to tile entity.";
+                } else
+                {
+                    addCoordString = "That position is already stored!";
+                }
+                if (worldIn.isRemote)
+                    playerIn.addChatMessage(new ChatComponentText(addCoordString));
 
             }
-        } else if (worldIn.isRemote) {
+        } else if (playerIn.isSneaking() && stack == null)
+        {
+            TileEntityCoordTransporter tile = (TileEntityCoordTransporter)worldIn.getTileEntity(pos);
+            if (worldIn.isRemote)
+            {
+                System.out.println("Printing Coord Transporters locations!");
+                tile.printEntryList();
+                System.out.println("Done printing!");
+            }
+        } else if (worldIn.isRemote)
+        {
             playerIn.openGui(TeleportMod.INSTANCE, GuiHandler.COORD_TRANSPORTER_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
 
@@ -90,6 +107,6 @@ public class BlockCoordTransporter extends Block implements ITileEntityProvider
     {
         super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
         TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
+        return tileentity != null && tileentity.receiveClientEvent(eventID, eventParam);
     }
 }

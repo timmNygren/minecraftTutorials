@@ -9,10 +9,10 @@ import net.minecraft.util.BlockPos;
 public class CoordEntry
 {
     private String name;
-    private String dimension;
+    private int dimension;
     private int x,y,z;
 
-    public CoordEntry(String name, String dimension, int x, int y, int z)
+    public CoordEntry(String name, int dimension, int x, int y, int z)
     {
         this.name = name;
         this.dimension = dimension;
@@ -31,7 +31,7 @@ public class CoordEntry
         this.name = name;
     }
 
-    public String getDimension()
+    public int getDimension()
     {
         return dimension;
     }
@@ -44,7 +44,7 @@ public class CoordEntry
     public void writeEntryToNBT(NBTTagCompound nbt)
     {
         nbt.setString("name", this.name);
-        nbt.setString("dimension", this.dimension);
+        nbt.setInteger("dimension", this.dimension);
         nbt.setInteger("posX", this.x);
         nbt.setInteger("posY", this.y);
         nbt.setInteger("posZ", this.z);
@@ -53,10 +53,58 @@ public class CoordEntry
     public static CoordEntry readEntryFromNBT(NBTTagCompound nbt)
     {
         String name = nbt.getString("name");
-        String dim = nbt.getString("dimension");
+        int dim = nbt.getInteger("dimension");
         int pX = nbt.getInteger("posX");
         int pY = nbt.getInteger("posY");
         int pZ = nbt.getInteger("posZ");
         return new CoordEntry(name, dim, pX, pY, pZ );
+    }
+
+    @Override
+    public String toString()
+    {
+        if (this.name.equals(""))
+            return "Dimension: " + this.getDimName(this.dimension) + ",  x: " + this.x + ", y: " + this.y + ", z: " + this.z;
+        else
+            return "Name: " + this.name + ", Dimension: " + this.getDimName(this.dimension) + ", x: " + this.x + ", y: " + this.y + ", z: " + this.z;
+    }
+
+    public String getDimName(int dim)
+    {
+        String dimension;
+        switch(dim)
+        {
+            case 0:
+                dimension = "Overworld";
+                break;
+            case -1:
+                dimension = "Nether";
+                break;
+            case 1:
+                dimension = "The End";
+                break;
+            default:
+                dimension = "Unknown (" + dim + ")";
+                break;
+        }
+        return dimension;
+    }
+
+//    @Override
+//    public int compareTo(CoordEntry o)
+//    {
+//        BlockPos pos= new BlockPos(this.x, this.y, this.z);
+//        BlockPos oPos = new BlockPos(o.x, o.y, o.z);
+//
+//        return pos.compareTo(oPos) == 0 ? this.dimension.compareTo(o.dimension) : pos.compareTo(oPos);
+//    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        CoordEntry o = (CoordEntry)obj;
+        boolean isEqualPos = this.x == o.x && this.y == o.y && this.z == o.z;
+        boolean isEqualDim = this.dimension == o.dimension;
+        return isEqualPos && isEqualDim;
     }
 }

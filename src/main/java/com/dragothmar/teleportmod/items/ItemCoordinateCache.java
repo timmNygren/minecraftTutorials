@@ -1,5 +1,6 @@
 package com.dragothmar.teleportmod.items;
 
+import com.dragothmar.teleportmod.CoordEntry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -79,25 +80,13 @@ public class ItemCoordinateCache extends Item
             {
                 NBTTagCompound nbt = (NBTTagCompound)stack.getTagCompound().getTag(NBT_TAG_COORDS);
                 int dim = nbt.getInteger("dim");
-                String dimension = "";
-                switch(dim)
-                {
-                    case 0:
-                        dimension = "Overworld";
-                        break;
-                    case -1:
-                        dimension = "Nether";
-                        break;
-                    case 1:
-                        dimension = "The End";
-                        break;
-                }
                 int posX = nbt.getInteger("posX");
                 int posY = nbt.getInteger("posY");
                 int posZ = nbt.getInteger("posZ");
+                CoordEntry entry = new CoordEntry("", dim, posX, posY, posZ);
                 tooltip.add("Block coordinates at");
-                tooltip.add("x: " + posX + " y: " + posY + " z: " + posZ);
-                tooltip.add(dimension);
+                tooltip.add(entry.toString());
+//                tooltip.add(dim);
             }
         }
     }

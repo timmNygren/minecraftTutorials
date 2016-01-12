@@ -17,27 +17,28 @@ public class TileEntityCoordTransporter extends TileEntity
 {
     private List<CoordEntry> teleports = new ArrayList<CoordEntry>();
 
-    public void addEntry(String name, ItemStack coordCache)
+
+    /**
+     *
+     * @param name The name of the entry.
+     * @param coordCache Contains the block coordinates and dimension value.
+     * @return Returns 0 if the coordCache is successfully added to the teleports list
+     *         Returns -1 if the entry is not added
+     */
+    public int addEntry(String name, ItemStack coordCache)
     {
         NBTTagCompound nbt = (NBTTagCompound)coordCache.getTagCompound().getTag(ItemCoordinateCache.NBT_TAG_COORDS);
         int dim = nbt.getInteger("dim");
-        String dimension = "";
-        switch(dim)
-        {
-            case 0:
-                dimension = "Overworld";
-                break;
-            case -1:
-                dimension = "Nether";
-                break;
-            case 1:
-                dimension = "The End";
-                break;
-        }
         int posX = nbt.getInteger("posX");
         int posY = nbt.getInteger("posY");
         int posZ = nbt.getInteger("posZ");
-        teleports.add(new CoordEntry(name, dimension, posX, posY, posZ));
+        CoordEntry toAdd = new CoordEntry(name, dim, posX, posY, posZ);
+        if (!teleports.contains(toAdd))
+        {
+            teleports.add(toAdd);
+            return 0;
+        }
+        return -1;
     }
 
     public CoordEntry getEntry(int index)
@@ -54,6 +55,14 @@ public class TileEntityCoordTransporter extends TileEntity
         if ( index < teleports.size() && index >= 0)
         {
             teleports.remove(index);
+        }
+    }
+
+    public void printEntryList()
+    {
+        for( CoordEntry entry : teleports)
+        {
+            System.out.println(entry.toString());
         }
     }
 
@@ -87,4 +96,5 @@ public class TileEntityCoordTransporter extends TileEntity
         }
         compound.setTag("teleports", entryList);
     }
+
 }
