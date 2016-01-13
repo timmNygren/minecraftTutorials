@@ -50,6 +50,11 @@ public class TileEntityCoordTransporter extends TileEntity
         return null;
     }
 
+    public int getSize()
+    {
+        return teleports.size();
+    }
+
     public void deleteEntry(int index)
     {
         if ( index < teleports.size() && index >= 0)

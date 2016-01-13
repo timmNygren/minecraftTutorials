@@ -72,7 +72,7 @@ public class BlockCoordTransporter extends Block implements ITileEntityProvider
                     playerIn.addChatMessage(new ChatComponentText(addCoordString));
 
             }
-        } else if (playerIn.isSneaking() && stack == null)
+        } else if (playerIn.isSneaking() && stack == null)  // For testing
         {
             TileEntityCoordTransporter tile = (TileEntityCoordTransporter)worldIn.getTileEntity(pos);
             if (worldIn.isRemote)
